@@ -1,77 +1,64 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
-int check_num(char figure[], int *p)
+int check_num(char figure[], int* p)
 {
     int k = *p;
 
     char str2[13] = "-.0123456789";
 
-    while (figure[k] == ' ')
-    {
+    while (figure[k] == ' ') {
         k++;
     }
 
-    if (figure[k] == '0')
-    {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL)
-        {
+    if (figure[k] == '0') {
+        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
             printf("Error at column %d: expected '.' \n", k);
             return 0;
         }
     }
 
-    if (strchr(str2, figure[k]) == NULL)
-    {
+    if (strchr(str2, figure[k]) == NULL) {
         printf("Error at column %d: unexpected character\n", k);
         return 0;
     }
 
-    while (strchr(str2, figure[k]) != NULL)
-    {
+    while (strchr(str2, figure[k]) != NULL) {
         k++;
     }
 
-    if (figure[k] == ',' || figure[k] == ')')
-    {
+    if (figure[k] == ',' || figure[k] == ')') {
         printf("Error at column %d: expected number\n", k);
         return 0;
     }
 
-    if (figure[k] != ' ')
-    {
+    if (figure[k] != ' ') {
         printf("Error at column %d: expected ' '\n", k);
         return 0;
     }
 
-    while (figure[k] == ' ')
-    {
+    while (figure[k] == ' ') {
         k++;
     }
 
-    if (figure[k] == '0')
-    {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL)
-        {
+    if (figure[k] == '0') {
+        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
             printf("Error at column %d: expected '.'\n", k);
             return 0;
         }
     }
 
-    if (strchr(str2, figure[k]) == NULL)
-    {
+    if (strchr(str2, figure[k]) == NULL) {
         printf("Error at column %d: unexpected character\n", k);
         return 0;
     }
 
-    while (strchr(str2, figure[k]) != NULL)
-    {
+    while (strchr(str2, figure[k]) != NULL) {
         k++;
     }
 
-    while (figure[k] == ' ')
-    {
+    while (figure[k] == ' ') {
         k++;
     }
 
@@ -85,80 +72,85 @@ void circle(char figure[])
     char str[6] = "circle";
     char str2[13] = "-.0123456789";
 
-    for (int i = 0; i < 5; i++)
-    {
+    for (int i = 0; i < 5; i++) {
         figure[i] = tolower(figure[i]);
-        if (figure[i] != str[i])
-        {
+        if (figure[i] != str[i]) {
             char strerr[6];
             strncpy(strerr, figure, 6);
             strerr[6] = '\0';
-            printf("Error at column 0: expected 'circle' instead of %s\n", strerr);
+            printf("Error at column 0: expected 'circle' instead of %s\n",
+                   strerr);
             return;
         }
     }
 
     int k = 7;
 
-    if (figure[6] != '(')
-    {
+    if (figure[6] != '(') {
         printf("Error at column %d: expected '('\n", k);
         return;
     }
 
-    if (check_num(figure, &k) == 0)
-    {
+    if (check_num(figure, &k) == 0) {
         return;
     }
 
-    if (figure[k-1] != ',')
-    {
+    if (figure[k - 1] != ',') {
         printf("Error at column %d: expected ','\n", k);
     }
 
-    while (figure[k] == ' ')
-    {
+    while (figure[k] == ' ') {
         k++;
     }
 
-    if (figure[k] == '0')
-    {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL)
-        {
+    if (figure[k] == '0') {
+        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
             printf("Error at column %d: expected '.'\n", k);
             return;
         }
     }
 
-    if (strchr(str2, figure[k]) == NULL)
-    {
+    if (strchr(str2, figure[k]) == NULL) {
         printf("Error at column %d: unexpected character\n", k);
         return;
     }
 
-    while (strchr(str2, figure[k]) != NULL)
-    {
+    while (strchr(str2, figure[k]) != NULL) {
         k++;
     }
 
-    if (figure[k] != ')')
-    {
+    if (figure[k] != ')') {
         printf("Error at column %d: expected ')'\n", k);
-    }
-    else
-    {
+    } else {
         printf("succeed\n");
     }
 }
-
 
 int main()
 {
     char figure1[64];
     int n;
+
     printf("enter the number of shapes:");
     scanf("%d\n", &n);
-    while(n>0)
+    if (n == 0 || n < 0) {
+        printf("stop!!! you entered 0 or <0!!!");
+    } else {
+        while (n > 0) {
+            fgets(figure1, 64, stdin);
+            figure1[0] = tolower(figure1[0]);
+            switch (figure1[0]) {
+            case 'c':
+                circle(figure1);
+                break;
+            default:
+                printf("Error at column 0: expected 'Circle'");
+            }
+            n--;
+        }
+    }
+
+    /*while(n>0)
     {
     fgets(figure1, 64, stdin);
     figure1[0] = tolower(figure1[0]);
@@ -171,7 +163,7 @@ int main()
             printf("Error at column 0: expected 'Circle'");
     }
     n--;
-    }
+    }*/
     return 0;
 }
 
