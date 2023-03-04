@@ -168,7 +168,7 @@ int main()
             circle(figure1);
          break;
         default:
-            printf("Error at column 0: expected 'Circle' or 'Triangle'");
+            printf("Error at column 0: expected 'Circle'");
     }
     n--;
     }
