@@ -149,21 +149,6 @@ int main()
             n--;
         }
     }
-
-    /*while(n>0)
-    {
-    fgets(figure1, 64, stdin);
-    figure1[0] = tolower(figure1[0]);
-        switch (figure1[0])
-        {
-        case 'c':
-            circle(figure1);
-         break;
-        default:
-            printf("Error at column 0: expected 'Circle'");
-    }
-    n--;
-    }*/
     return 0;
 }
 
