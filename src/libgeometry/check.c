@@ -66,7 +66,7 @@ int check_num(char figure[], int* p)
     return 1;
 }
 
-void circle(char figure[])
+int circle(char figure[])
 {
     char str[6] = "circle";
     char str2[13] = "-.0123456789";
@@ -79,7 +79,7 @@ void circle(char figure[])
             strerr[6] = '\0';
             printf("Error at column 0: expected 'circle' instead of %s\n",
                    strerr);
-            return;
+            return 1;
         }
     }
 
@@ -87,11 +87,11 @@ void circle(char figure[])
 
     if (figure[6] != '(') {
         printf("Error at column %d: expected '('\n", k);
-        return;
+        return 1;
     }
 
     if (check_num(figure, &k) == 0) {
-        return;
+        return 1;
     }
 
     if (figure[k - 1] != ',') {
@@ -105,13 +105,13 @@ void circle(char figure[])
     if (figure[k] == '0') {
         if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
             printf("Error at column %d: expected '.'\n", k);
-            return;
+            return 1;
         }
     }
 
     if (strchr(str2, figure[k]) == NULL) {
         printf("Error at column %d: unexpected character\n", k);
-        return;
+        return 1;
     }
 
     while (strchr(str2, figure[k]) != NULL) {
@@ -123,4 +123,5 @@ void circle(char figure[])
     } else {
         printf("succeed\n");
     }
+    return 0;
 }

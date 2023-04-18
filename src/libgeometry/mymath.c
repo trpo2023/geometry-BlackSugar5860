@@ -1,25 +1,20 @@
 #include <libgeometry/mymath.h>
 double GetCircleRadius(char* str)
 {
-    int length = strlen(str);
+    int length = 0;
     char radius[10];
     while (str[length] != ',') {
-        length--;
-    }
-
-    length++;
-
-    while (str[length] == ' ') {
         length++;
     }
 
+    length++; //шаг через запятую
     int current = 0;
-    while (str[length] != ' ' && str[length] != ')') {
+    while (str[length] != ')') {
         radius[current] = str[length];
         current++;
-        length--;
+        length++;
     }
-    radius[current + 1] = '\0';
+    radius[current + 2] = '\0';
     double circleRadius = atof(radius);
     return circleRadius;
 }
