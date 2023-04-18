@@ -5,4 +5,4 @@
 #include <string.h>
 #pragma once
 
-void circle(char* str);
+int circle(char* str);

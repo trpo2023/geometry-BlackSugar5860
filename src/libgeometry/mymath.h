@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-double perimeter(char* str);
+double GetCirclePerimeter(char* str);
 
-double area(char* str);
+double GetCircleArea(char* str);
