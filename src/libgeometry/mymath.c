@@ -1,5 +1,5 @@
-#include <libgeometry/mymath.h>
 #include <ctype.h>
+#include <libgeometry/mymath.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +12,7 @@ double GetCircleRadius(char* str)
         length++;
     }
 
-    length++; //шаг через запятую
+    length++; // шаг через запятую
     int current = 0;
     while (str[length] != ')') {
         radius[current] = str[length];
