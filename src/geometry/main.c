@@ -19,10 +19,11 @@ int main()
             fgets(figure, 64, stdin);
             figure[0] = tolower(figure[0]);
             if (circle(figure) == 0) {
-                printf("\nperimeter: %f\narea: %f\n", GetCirclePerimeter(figure), GetCircleArea(figure));
+                printf("\nperimeter: %f\narea: %f\n",
+                       GetCirclePerimeter(figure),
+                       GetCircleArea(figure));
             }
             n--;
-
         }
     }
     return 0;

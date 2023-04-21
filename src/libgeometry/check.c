@@ -1,6 +1,12 @@
 
 #include <libgeometry/check.h>
 
+#include <ctype.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 int check_num(char figure[], int* p)
 {
     int k = *p;

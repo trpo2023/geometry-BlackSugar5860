@@ -1,4 +1,9 @@
 #include <libgeometry/mymath.h>
+#include <ctype.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 double GetCircleRadius(char* str)
 {
     int length = 0;
