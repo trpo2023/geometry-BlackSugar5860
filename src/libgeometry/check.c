@@ -105,11 +105,6 @@ int check_num(char figure[], int* ptr)
 
 int circle(char* figure)
 {
-    int i = 0;
-    while (figure[i] != '\n') {
-        figure[i] = tolower(figure[i]);
-        i++;
-    }
     int errcode;
     char str[6] = "circle";
     char substr[13] = "-.0123456789";
