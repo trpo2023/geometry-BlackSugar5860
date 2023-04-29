@@ -1,133 +1,166 @@
-
-#include <libgeometry/check.h>
-
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int check_num(char figure[], int* p)
+#include <libgeometry/check.h>
+
+int print_error(int errcode, int current_el, char* strerr)
 {
-    int k = *p;
+    switch (errcode) {
+    case 1:
+        printf("Error at column 0: expected 'circle' instead of %s\n", strerr);
+        return errcode;
 
-    char str2[13] = "-.0123456789";
+    case 2:
+        printf("Error at column %d: expected '.' \n", current_el);
+        return errcode;
+    case 3:
+        printf("Error at column %d: unexpected character\n", current_el);
+        return errcode;
+    case 4:
+        printf("Error at column %d: expected number\n", current_el);
+        return errcode;
 
-    while (figure[k] == ' ') {
-        k++;
+    case 5:
+        printf("Error at column %d: expected ' '\n", current_el);
+        return errcode;
+    case 6:
+        printf("Error at column %d: expected '('\n", current_el);
+        return errcode;
+
+    case 7:
+        printf("Error at column %d: expected ','\n", current_el);
+        return errcode;
+    case 8:
+        printf("Error at column %d: expected ')'\n", current_el);
+        return errcode;
     }
-
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.' \n", k);
-            return 0;
-        }
-    }
-
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return 0;
-    }
-
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
-    }
-
-    if (figure[k] == ',' || figure[k] == ')') {
-        printf("Error at column %d: expected number\n", k);
-        return 0;
-    }
-
-    if (figure[k] != ' ') {
-        printf("Error at column %d: expected ' '\n", k);
-        return 0;
-    }
-
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.'\n", k);
-            return 0;
-        }
-    }
-
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return 0;
-    }
-
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
-    }
-
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    k++;
-    *p = k;
-    return 1;
+    return 0;
 }
 
-int circle(char figure[])
+int check_num(char figure[], int* ptr)
 {
-    char str[6] = "circle";
+    int current_el = *ptr;
+
     char str2[13] = "-.0123456789";
+
+    int errcode;
+
+    while (figure[current_el] == ' ') {
+        current_el++;
+    }
+
+    if (figure[current_el] == '0') {
+        if (figure[current_el + 1] != '.'
+            && strchr(str2, figure[current_el + 1]) != NULL) {
+            return print_error(errcode = 2, current_el, 0);
+        }
+    }
+
+    if (strchr(str2, figure[current_el]) == NULL) {
+        return print_error(errcode = 3, current_el, 0);
+    }
+
+    while (strchr(str2, figure[current_el]) != NULL) {
+        current_el++;
+    }
+
+    if (figure[current_el] == ',' || figure[current_el] == ')') {
+        return print_error(errcode = 4, current_el, 0);
+    }
+
+    if (figure[current_el] != ' ') {
+        return print_error(errcode = 5, current_el, 0);
+    }
+
+    while (figure[current_el] == ' ') {
+        current_el++;
+    }
+
+    if (figure[current_el] == '0') {
+        if (figure[current_el + 1] != '.'
+            && strchr(str2, figure[current_el + 1]) != NULL) {
+            return print_error(errcode = 2, current_el, 0);
+        }
+    }
+
+    if (strchr(str2, figure[current_el]) == NULL) {
+        return print_error(errcode = 3, current_el, 0);
+    }
+
+    while (strchr(str2, figure[current_el]) != NULL) {
+        current_el++;
+    }
+
+    while (figure[current_el] == ' ') {
+        current_el++;
+    }
+
+    current_el++;
+    *ptr = current_el;
+    return 0;
+}
+
+int circle(char* figure)
+{
+    int i = 0;
+    while (figure[i] != '\n') {
+        figure[i] = tolower(figure[i]);
+        i++;
+    }
+    int errcode;
+    char str[6] = "circle";
+    char substr[13] = "-.0123456789";
 
     for (int i = 0; i < 5; i++) {
         figure[i] = tolower(figure[i]);
+
         if (figure[i] != str[i]) {
             char strerr[6];
             strncpy(strerr, figure, 6);
             strerr[6] = '\0';
-            printf("Error at column 0: expected 'circle' instead of %s\n",
-                   strerr);
-            return 1;
+            return print_error(errcode = 1, 0, strerr);
         }
     }
 
-    int k = 7;
+    int current_el = 7;
 
     if (figure[6] != '(') {
-        printf("Error at column %d: expected '('\n", k);
-        return 1;
+        return print_error(errcode = 6, current_el, 0);
     }
 
-    if (check_num(figure, &k) == 0) {
-        return 1;
+    errcode = check_num(figure, &current_el);
+    if (errcode != 0) {
+        return errcode;
     }
 
-    if (figure[k - 1] != ',') {
-        printf("Error at column %d: expected ','\n", k);
+    if (figure[current_el - 1] != ',') {
+        return print_error(errcode = 7, current_el, 0);
     }
 
-    while (figure[k] == ' ') {
-        k++;
+    while (figure[current_el] == ' ') {
+        current_el++;
     }
 
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.'\n", k);
-            return 1;
+    if (figure[current_el] == '0') {
+        if (figure[current_el + 1] != '.'
+            && strchr(substr, figure[current_el + 1]) != NULL) {
+            return print_error(errcode = 2, current_el, 0);
         }
     }
 
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return 1;
+    if (strchr(substr, figure[current_el]) == NULL) {
+        return print_error(errcode = 3, current_el, 0);
     }
 
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
+    while (strchr(substr, figure[current_el]) != NULL) {
+        current_el++;
     }
 
-    if (figure[k] != ')') {
-        printf("Error at column %d: expected ')'\n", k);
-    } else {
-        printf("succeed\n");
+    if (figure[current_el] != ')') {
+        return print_error(errcode = 8, current_el, 0);
     }
     return 0;
 }
